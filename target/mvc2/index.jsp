@@ -8,6 +8,6 @@
     password:<input name="password" type="password"/>
     <input type="submit">
 </form>
-${messge}
+<div >${messge}</div>
 </body>
 </html>
