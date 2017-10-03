@@ -1,6 +1,8 @@
 package service;
 
+import dao.PostMapper;
 import entity.Post;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -12,6 +14,10 @@ import java.util.List;
 @Service
 public class PostService {
     private List<Post> list;
+
+    @Autowired
+    private PostMapper postMapper;
+
     public PostService(){
         list=new LinkedList<Post>();
         Post p=new Post();
@@ -37,14 +43,14 @@ public class PostService {
         list.add(p3);
     }
     public  List<Post> getAllPosts() {
-        return list;
+        return postMapper.getAllPosts();
     }
     public Post getPostById(Integer id){
-        for (Post p:list) {
-            if(p.getId()==id){
-                return p;
-            }
-        }
-        return null;
+//        for (Post p:list) {
+//            if(p.getId()==id){
+//                return p;
+//            }
+//        }
+        return postMapper.getPostById(id);
     }
 }

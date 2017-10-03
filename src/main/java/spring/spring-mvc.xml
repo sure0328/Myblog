@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                          http://www.springframework.org/schema/context
@@ -17,6 +18,37 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <context:component-scan base-package="service"/>
+    <context:component-scan base-package="dao"/>
+
+    <bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/myblog"/>
+        <property name="username" value="root"/>
+        <property name="password" value="abc123456"/>
+    </bean>
+    <!--
+       2. mybatis的SqlSession的工厂: SqlSessionFactoryBean
+           dataSource / typeAliasesPackage
+   -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource"/>
+        <property name="typeAliasesPackage" value="entity"/>
+    </bean>
+
+    <!--
+        3. mybatis自动扫描加载Sql映射文件 : MapperScannerConfigurer
+            sqlSessionFactory / basePackage
+    -->
+    <bean id="config" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    <!-- 4. 事务管理 : DataSourceTransactionManager -->
+    <bean id="manager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="datasource"/>
+    </bean>
+
+
 
     <!--HandlerMapping 无需配置，springmvc可以默认启动-->
 
