@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Post;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -14,4 +15,7 @@ public interface PostMapper {
 
     @Select("select * from post")
     List<Post> getAllPosts();
+
+    @Insert("insert into post(content,title) values(#{content},#{title})")
+    int insertPost(Post p);
 }

@@ -32,6 +32,17 @@ public class PostController {
         model.addAttribute("post",post);
         return "/post/postDetail";
     }
+
+    @RequestMapping("/insertPost")
+    public  String insertPost(String title,String content,Model model){
+        Post post=new Post();
+        post.setContent(content);
+        post.setTitle(title);
+        hservice.insertPost(post);
+        model.addAttribute("post",post);
+        return "/post/postDetail";
+    }
+
     @RequestMapping("/login")
     public  String save(String username,String password,Model model){
         if(username.equals("user")&&password.equals("123456")){
